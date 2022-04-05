@@ -1,18 +1,18 @@
-const { user, profile } = require("../../models");
+const { user, profile, product } = require('../../models');
 
 exports.addUsers = async (req, res) => {
   try {
     await user.create(req.body);
 
     res.send({
-      status: "success",
-      message: "Add user finished",
+      status: 'success',
+      message: 'Add user finished',
     });
   } catch (error) {
     console.log(error);
     res.send({
-      status: "failed",
-      message: "Server Error",
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
@@ -22,18 +22,18 @@ exports.getUsers = async (req, res) => {
     const users = await user.findAll({
       include: {
         model: profile,
-        as: "profile",
+        as: 'profile',
         attributes: {
-          exclude: ["createdAt", "updatedAt", "idUser"],
+          exclude: ['createdAt', 'updatedAt', 'idUser'],
         },
       },
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt"],
+        exclude: ['password', 'createdAt', 'updatedAt'],
       },
     });
 
     res.send({
-      status: "success",
+      status: 'success',
       data: {
         users,
       },
@@ -41,8 +41,41 @@ exports.getUsers = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send({
-      status: "failed",
-      message: "Server Error",
+      status: 'failed',
+      message: 'Server Error',
+    });
+  }
+};
+
+exports.getUserProducts = async (req, res) => {
+  try {
+    const users = await user.findAll({
+      where: {
+        status: 'seller',
+      },
+      include: {
+        model: product,
+        as: 'products',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'idUser'],
+        },
+      },
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt'],
+      },
+    });
+
+    res.send({
+      status: 'success',
+      data: {
+        users,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
@@ -57,18 +90,18 @@ exports.getUser = async (req, res) => {
       },
       include: {
         model: profile,
-        as: "profile",
+        as: 'profile',
         attributes: {
-          exclude: ["createdAt", "updatedAt", "idUser"],
+          exclude: ['createdAt', 'updatedAt', 'idUser'],
         },
       },
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt"],
+        exclude: ['password', 'createdAt', 'updatedAt'],
       },
     });
 
     res.send({
-      status: "success",
+      status: 'success',
       data: {
         user: data,
       },
@@ -76,8 +109,8 @@ exports.getUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send({
-      status: "failed",
-      message: "Server Error",
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
@@ -93,15 +126,15 @@ exports.updateUser = async (req, res) => {
     });
 
     res.send({
-      status: "success",
+      status: 'success',
       message: `Update user id: ${id} finished`,
       data: req.body,
     });
   } catch (error) {
     console.log(error);
     res.send({
-      status: "failed",
-      message: "Server Error",
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
@@ -117,14 +150,14 @@ exports.deleteUser = async (req, res) => {
     });
 
     res.send({
-      status: "success",
+      status: 'success',
       message: `Delete user id: ${id} finished`,
     });
   } catch (error) {
     console.log(error);
     res.send({
-      status: "failed",
-      message: "Server Error",
+      status: 'failed',
+      message: 'Server Error',
     });
   }
 };
