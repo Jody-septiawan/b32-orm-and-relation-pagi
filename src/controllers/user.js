@@ -46,9 +46,12 @@ exports.getProfile = async (req, res) => {
       include: {
         as: 'user',
         model: user,
+        attributes: {
+          exclude: ['password', 'createdAt', 'updatedAt'],
+        },
       },
       attributes: {
-        exclude: ['password', 'createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     });
 
