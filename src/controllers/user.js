@@ -1,27 +1,73 @@
-const { user } = require('../../models')
+const { user } = require('../../models');
 
 exports.addUsers = async (req, res) => {
-    try {
+  try {
+    await user.create(req.body);
 
-        await user.create(req.body)
-
-        res.send({
-            status: 'success',
-            message: 'Add user finished'
-        })
-    } catch (error) {
-        console.log(error)
-        res.send({
-            status: 'failed',
-            message: 'Server Error'
-        })
-    }
-}
+    res.send({
+      status: 'success',
+      message: 'Add user finished',
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: 'failed',
+      message: 'Server Error',
+    });
+  }
+};
 
 exports.getUsers = async (req, res) => {
-    // code here
-}
+  try {
+    const data = await user.findAll({
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt'],
+      },
+    });
+
+    res.send({
+      status: 'success',
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: 'failed',
+      message: 'Server Error',
+    });
+  }
+};
 
 exports.getUser = async (req, res) => {
-    // code here
-}
+  try {
+    const id = req.params.id;
+
+    const data = await user.findOne({
+      where: {
+        id,
+      },
+      attributes: {
+        exclude: ['password', 'createdAt', 'updatedAt'],
+      },
+    });
+
+    if (!data) {
+      return res.send({
+        error: {
+          message: `Account with ID: ${id} not found`,
+        },
+      });
+    }
+
+    res.send({
+      status: 'success',
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: 'failed',
+      message: 'Server Error',
+    });
+  }
+};
