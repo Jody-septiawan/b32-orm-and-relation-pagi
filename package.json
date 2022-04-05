@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
+    "pg": "^8.7.3",
     "sequelize": "^6.6.4",
     "sequelize-cli": "^6.2.0"
   },
